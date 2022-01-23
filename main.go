@@ -30,8 +30,36 @@ func main() {
 		fmt.Println("Enter no of ticket")
 		fmt.Scan(&ticketsBooked)
 
+		//user validation
+
+		if !((len(firstName) >= 3) && (len(lastName) >= 3)) {
+			fmt.Println("Please Enter a Valid Name :)")
+			fmt.Println("##########################################################")
+			continue
+		}
+
+		//email
+
+		check := strings.Contains(email, "@")
+		check1 := strings.Contains(email, ".com")
+
+		if !(check && check1) {
+			fmt.Println("Please enter a valid fomat of your email")
+			fmt.Println("##########################################################")
+			continue
+		}
+
+		//tickets
+
+		if !(ticketsBooked > 0) {
+			fmt.Println("Please enter a valid amount of Tickets")
+			fmt.Println("##########################################################")
+			continue
+		}
+
 		for availableTickets-ticketsBooked < 0 {
-			fmt.Printf("Please Enter the ticket in range of %d : ", availableTickets)
+			fmt.Printf("Please Enter the ticket in range of %d : \n", availableTickets)
+			fmt.Println("##########################################################")
 			fmt.Scan(&ticketsBooked)
 		}
 		availableTickets = availableTickets - ticketsBooked
@@ -59,5 +87,7 @@ func main() {
 		}
 
 		fmt.Printf("All users %v \n", bookings)
+		fmt.Println("##########################################################")
+		fmt.Println("##########################################################")
 	}
 }
