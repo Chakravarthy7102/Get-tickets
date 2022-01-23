@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"get-tickets/subpack"
+	"strconv"
 	"strings"
 )
 
@@ -9,11 +11,9 @@ func main() {
 	companyName := "TicketsGet"
 	const totalTickets = 50
 	var availableTickets int = 50
-	bookings := []string{}
+	bookings := make([]map[string]string, 0)
 
-	fmt.Printf("hello world! \nWelcome To %s \n", companyName)
-	fmt.Printf("Total Tickets are %d Available Tickets %d \n", totalTickets, availableTickets)
-	fmt.Println("Book yo Tickets fast..very fasst")
+	subpack.UserGreetings(companyName, totalTickets, availableTickets)
 
 	for {
 		var firstName string
@@ -34,7 +34,7 @@ func main() {
 
 		if !((len(firstName) >= 3) && (len(lastName) >= 3)) {
 			fmt.Println("Please Enter a Valid Name :)")
-			fmt.Println("##########################################################")
+			subpack.EndLine()
 			continue
 		}
 
@@ -45,7 +45,7 @@ func main() {
 
 		if !(check && check1) {
 			fmt.Println("Please enter a valid fomat of your email")
-			fmt.Println("##########################################################")
+			subpack.EndLine()
 			continue
 		}
 
@@ -53,30 +53,41 @@ func main() {
 
 		if !(ticketsBooked > 0) {
 			fmt.Println("Please enter a valid amount of Tickets")
-			fmt.Println("##########################################################")
+			subpack.EndLine()
 			continue
 		}
 
 		for availableTickets-ticketsBooked < 0 {
 			fmt.Printf("Please Enter the ticket in range of %d : \n", availableTickets)
-			fmt.Println("##########################################################")
+			subpack.EndLine()
 			fmt.Scan(&ticketsBooked)
 		}
+
 		availableTickets = availableTickets - ticketsBooked
 
+		//maps
+
+		bookingMap := make(map[string]string)
+
+		bookingMap["first Name"] = firstName
+		bookingMap["Last Name"] = lastName
+		bookingMap["email"] = email
+		bookingMap["Number of Tickets"] = strconv.FormatInt(int64(ticketsBooked), 10)
+
 		// bookings[0] = firstName + " " + lastName
-		bookings = append(bookings, firstName+" "+lastName)
+		bookings = append(bookings, bookingMap)
 
 		fmt.Printf("You %s %s have booked %d tickets you will get a confirmation at this %s mail \n", firstName, lastName, ticketsBooked, email)
 
 		fmt.Printf("%d remaining ...\n", availableTickets)
 
+		//slices
 		firstNames := []string{}
 
 		for _, booking := range bookings {
 
-			firstname := strings.Fields(booking)
-			firstNames = append(firstNames, firstname[0])
+			firstname := booking["first Name"]
+			firstNames = append(firstNames, firstname)
 
 		}
 		fmt.Println(firstNames)
@@ -87,7 +98,7 @@ func main() {
 		}
 
 		fmt.Printf("All users %v \n", bookings)
-		fmt.Println("##########################################################")
-		fmt.Println("##########################################################")
+		subpack.EndLine()
+
 	}
 }
