@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"get-tickets/subpack"
-	"strconv"
 	"strings"
 )
 
@@ -11,7 +10,15 @@ func main() {
 	companyName := "TicketsGet"
 	const totalTickets = 50
 	var availableTickets int = 50
-	bookings := make([]map[string]string, 0)
+	type UserData struct {
+		firstName     string
+		lastName      string
+		email         string
+		ticketsBooked int
+	}
+	bookings := make([]UserData, 0)
+
+	//struct
 
 	subpack.UserGreetings(companyName, totalTickets, availableTickets)
 
@@ -65,17 +72,24 @@ func main() {
 
 		availableTickets = availableTickets - ticketsBooked
 
+		userData := UserData{
+			firstName:     firstName,
+			lastName:      lastName,
+			email:         email,
+			ticketsBooked: ticketsBooked,
+		}
+
 		//maps
 
-		bookingMap := make(map[string]string)
+		// bookingMap := make(map[string]string)
 
-		bookingMap["first Name"] = firstName
-		bookingMap["Last Name"] = lastName
-		bookingMap["email"] = email
-		bookingMap["Number of Tickets"] = strconv.FormatInt(int64(ticketsBooked), 10)
+		// bookingMap["first Name"] = firstName
+		// bookingMap["Last Name"] = lastName
+		// bookingMap["email"] = email
+		// bookingMap["Number of Tickets"] = strconv.FormatInt(int64(ticketsBooked), 10)
 
 		// bookings[0] = firstName + " " + lastName
-		bookings = append(bookings, bookingMap)
+		bookings = append(bookings, userData)
 
 		fmt.Printf("You %s %s have booked %d tickets you will get a confirmation at this %s mail \n", firstName, lastName, ticketsBooked, email)
 
@@ -86,7 +100,7 @@ func main() {
 
 		for _, booking := range bookings {
 
-			firstname := booking["first Name"]
+			firstname := booking.firstName
 			firstNames = append(firstNames, firstname)
 
 		}
