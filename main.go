@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"get-tickets/subpack"
 	"strings"
+	"sync"
+	"time"
 )
+
+var wl = sync.WaitGroup{}
 
 func main() {
 	companyName := "TicketsGet"
@@ -95,6 +99,9 @@ func main() {
 
 		fmt.Printf("%d remaining ...\n", availableTickets)
 
+		wl.Add(1)
+		go TicketToMail(ticketsBooked, firstName, lastName, email)
+
 		//slices
 		firstNames := []string{}
 
@@ -113,6 +120,18 @@ func main() {
 
 		fmt.Printf("All users %v \n", bookings)
 		subpack.EndLine()
+		wl.Wait()
 
 	}
+}
+
+func TicketToMail(ticketsBooked int, firstName string, lastName string, email string) {
+	time.Sleep(10 * time.Second)
+	fmt.Println("##########################################")
+	message := fmt.Sprintf("%v tickets are booked by %v %v to mail %v \n", ticketsBooked, firstName, lastName, email)
+	fmt.Printf("Mailed Succesfully!! %v\n", message)
+	fmt.Println("##########################################")
+
+	wl.Done()
+
 }
